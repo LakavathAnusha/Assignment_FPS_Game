@@ -14,69 +14,19 @@ public class CannimalController : MonoBehaviour
     public List<AudioClip> audioClips;
     public float walkingSpeed;
     public float runningSpeed;
-    public enum STATE { IDLE, WONDER, CHASE, ATTACK, DEAD };
+    public enum STATE { IDLE,WALK,RUN,ATTACK,PUNCH,DEAD,WONDER };
     public STATE state = STATE.IDLE;//default state
     // Start is called before the first frame update
     void Start()
     {
         anim = this.GetComponent<Animator>();
-        //anim.SetBool("isWalking", true);
         agent = this.GetComponent<NavMeshAgent>();
-        // audio = this.GetComponent<AudioSource>();
-        //.playOnAwake = audioClips[0];
     }
 
     // Update is called once per frame
     void Update()
     {
-        /*
-        agent.SetDestination(target.transform.position);
-
-        if (agent.remainingDistance > agent.stoppingDistance)
-        {
-            anim.SetBool("isWalking", true);
-            anim.SetBool("isAttacking", false);
-        }
-        else
-        {
-            anim.SetBool("isWalking", false);
-            anim.SetBool("isAttacking", true);
-            audio.PlayOneShot(audioClips[1]);
-        }
-        
-        if (Input.GetKey(KeyCode.W))
-        {
-            anim.SetBool("isWalking", true);
-        }
-        else
-            anim.SetBool("isWalking", false);
-
-        if (Input.GetKey(KeyCode.R))
-        {
-            anim.SetBool("isRunning", true);
-        }
-        else
-            anim.SetBool("isRunning", false);
-
-        if (Input.GetKey(KeyCode.A))
-        {
-            anim.SetBool("isAttacking", true);
-        }
-        else
-            anim.SetBool("isAttacking", false);
-
-        if (Input.GetKey(KeyCode.G))
-        {
-            anim.SetBool("isDead", true);
-        }*/
-
-        //if (Input.GetKey(KeyCode.R))
-        //{
-        //    GameObject tempRd= Instantiate(ragdollPrefab, this.transform.position, this.transform.rotation);
-        //    tempRd.transform.Find("Hips").GetComponent<Rigidbody>().AddForce(Camera.main.transform.forward * 10000);
-        //    Destroy(this.gameObject);
-        //    return;
-        //}
+  
         if (target == null && GameStart.isGameOver == false)
         {
             target = GameObject.FindGameObjectWithTag("Player");
@@ -86,7 +36,7 @@ public class CannimalController : MonoBehaviour
         {
             case STATE.IDLE:
                 if (CanSeePlayer())
-                    state = STATE.CHASE;
+                    state = STATE.ATTACK;
                 else if (Random.Range(0, 1000) < 5)
                 {
                     state = STATE.WONDER;
@@ -111,7 +61,7 @@ public class CannimalController : MonoBehaviour
                 }
                 if (CanSeePlayer())
                 {
-                    state = STATE.CHASE;
+                    state = STATE.WONDER;
                 }
                 else if (Random.Range(0, 1000) < 7)
                 {
@@ -122,7 +72,7 @@ public class CannimalController : MonoBehaviour
 
                 break;
 
-            case STATE.CHASE:
+            case STATE.WALK:
                 if (GameStart.isGameOver)
                 {
                     TurnOffAllTriggerAnim();
@@ -158,7 +108,7 @@ public class CannimalController : MonoBehaviour
                 transform.LookAt(target.transform.position);//Zombies should look at Player
                 if (DistanceToPlayer() > agent.stoppingDistance + 2)
                 {
-                    state = STATE.CHASE;
+                    state = STATE.WONDER;
                 }
                 print("Attack State");
                 break;
@@ -175,12 +125,13 @@ public class CannimalController : MonoBehaviour
                 break;
         }
     }
-    public void TurnOffAllTriggerAnim()//All animation are off
+    public void TurnOffAllTriggerAnim()
     {
-        anim.SetBool("isWalking", false);
-        anim.SetBool("isAttacking", false);
-        anim.SetBool("isRunning", false);
-        anim.SetBool("isDead", false);
+        anim.SetBool("IsWalk", false);
+        anim.SetBool("IsAttack", false);
+        anim.SetBool("IsRun", false);
+        anim.SetBool("IsPunch", false);
+        anim.SetBool("IsDead", false);
     }
 
     public bool CanSeePlayer()
@@ -216,7 +167,7 @@ public class CannimalController : MonoBehaviour
             return false;
     }
 
-    public void KillZombie()
+    public void KillConnimal()
     {
         TurnOffAllTriggerAnim();
         anim.SetBool("isDead", true);
