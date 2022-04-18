@@ -67,4 +67,9 @@ public class PlayerController : MonoBehaviour
         n.x = Mathf.Tan(Mathf.Deg2Rad * angleX * 0.5f);
         return n;
     }
+
+    internal void TakeHit(int damageAmount)
+    {
+        throw new NotImplementedException();
+    }
 }
