@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     // Start is called before the first frame update
     public float playerSpeed;
-    public float playerJumpForce;
+    
     public float playerRotationSpeed;
     //public Transform bulletLaunch;
     //public GameObject steveModelPrefabs;
@@ -17,15 +17,15 @@ public class PlayerController : MonoBehaviour
     Quaternion camRotation;
     public Camera cam;
     Quaternion playerRotation;
-    //float minX = -90f;
-    //float maxX = 90f;
 
+    public AudioSource audioSource;
     //SpawnManager spawnManager;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         colliders = GetComponent<CapsuleCollider>();
+        audioSource = GetComponent<AudioSource>();
 
     }
     private void Update()
@@ -38,24 +38,19 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         float inputX = Input.GetAxis("Horizontal") * playerSpeed;
+        audioSource.Play();
         float inputz = Input.GetAxis("Vertical") * playerSpeed;
+        audioSource.Play();
 
         transform.position += new Vector3(inputX, 0f, inputz);
-
-        /* float mouseX = Input.GetAxis("Mouse X") * playerRotationSpeed;
-         float mouseY = Input.GetAxis("Mouse Y") * playerRotationSpeed;
-         //Debug.Log(mouseY);
-         playerRotation = Quaternion.Euler(0f, mouseX, 0f);
-         camRotation = Quaternion.Euler(-mouseY, 0f, 0f);
-         camRotation = ClampRotationPlayer(camRotation);
-         // this.transform.localRotation = playerRotation;
-         transform.localRotation = playerRotation * transform.localRotation;
-         cam.transform.localRotation = camRotation * cam.transform.localRotation;*/
+        
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
+        audioSource.Play();
         transform.rotation = transform.rotation * Quaternion.Euler(0, mouseX *playerRotationSpeed, 0);
         Camera cam = GetComponentInChildren<Camera>();
         cam.transform.localRotation = Quaternion.Euler(-mouseY, 0, 0) * cam.transform.localRotation;
+       
 
     }
 
