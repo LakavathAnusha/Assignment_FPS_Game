@@ -14,7 +14,7 @@ public class CannimalController : MonoBehaviour
     public List<AudioClip> audioClips;
     public float walkingSpeed;
     public float runningSpeed;
-    public enum STATE { IDLE,WALK,RUN,ATTACK,PUNCH,DEAD,WONDER };
+    public enum STATE { IDLE,WALK,RUN,ATTACK,PUNCH };
     public STATE state = STATE.IDLE;//default state
     // Start is called before the first frame update
     void Start()
@@ -39,14 +39,14 @@ public class CannimalController : MonoBehaviour
                     state = STATE.ATTACK;
                 else if (Random.Range(0, 1000) < 5)
                 {
-                    state = STATE.WONDER;
+                    state = STATE.WALK;
                 }
 
 
 
 
                 break;
-            case STATE.WONDER:
+            case STATE.WALK:
                 if (!agent.hasPath)
                 {
                     float randValueX = transform.position.x + Random.Range(-5f, 5f);
@@ -57,32 +57,33 @@ public class CannimalController : MonoBehaviour
                     agent.stoppingDistance = 0f;
                     agent.speed = walkingSpeed;
                     TurnOffAllTriggerAnim();
-                    anim.SetBool("isWalking", true);
+                    anim.SetBool("IsWalk", true);
                 }
                 if (CanSeePlayer())
                 {
-                    state = STATE.WONDER;
+                    state = STATE.RUN;
                 }
                 else if (Random.Range(0, 1000) < 7)
                 {
                     state = STATE.IDLE;
                     TurnOffAllTriggerAnim();
+                  //  anim.SetBool("IsRun", true);
                     agent.ResetPath();
                 }
 
                 break;
 
-            case STATE.WALK:
+            case STATE.RUN:
                 if (GameStart.isGameOver)
                 {
                     TurnOffAllTriggerAnim();
-                    state = STATE.WONDER;
+                    state = STATE.WALK;
                     return;
                 }
                 agent.SetDestination(target.transform.position);
                 agent.stoppingDistance = 2f;
                 TurnOffAllTriggerAnim();
-                anim.SetBool("isRunning", true);
+                anim.SetBool("IsRun", true);
                 agent.speed = runningSpeed;
                 if (agent.remainingDistance <= agent.stoppingDistance && !agent.pathPending)
                 {
@@ -90,7 +91,7 @@ public class CannimalController : MonoBehaviour
                 }
                 if (CannotSeePlayer())
                 {
-                    state = STATE.WONDER;
+                    state = STATE.WALK;
                     agent.ResetPath();
                 }
 
@@ -100,26 +101,26 @@ public class CannimalController : MonoBehaviour
                 if (GameStart.isGameOver)
                 {
                     TurnOffAllTriggerAnim();
-                    state = STATE.WONDER;
+                    state = STATE.RUN;
                     return;
                 }
                 TurnOffAllTriggerAnim();
-                anim.SetBool("isAttacking", true);
+                anim.SetBool("IsAttack", true);
                 transform.LookAt(target.transform.position);//Zombies should look at Player
                 if (DistanceToPlayer() > agent.stoppingDistance + 2)
                 {
-                    state = STATE.WONDER;
+                    state = STATE.RUN;
                 }
                 print("Attack State");
                 break;
 
-            case STATE.DEAD:
+            /*case STATE.DEAD:
 
                 //GameObject tempRd = Instantiate(ragdollPrefab, this.transform.position, this.transform.rotation);
                 //tempRd.transform.Find("Hips").GetComponent<Rigidbody>().AddForce(Camera.main.transform.forward * 10000);
                 Destroy(agent);
                // this.GetComponent<SinkToGround>().ReadyToSink();
-                break;
+                break;*/
 
             default:
                 break;
@@ -131,7 +132,7 @@ public class CannimalController : MonoBehaviour
         anim.SetBool("IsAttack", false);
         anim.SetBool("IsRun", false);
         anim.SetBool("IsPunch", false);
-        anim.SetBool("IsDead", false);
+        //anim.SetBool("IsDead", false);
     }
 
     public bool CanSeePlayer()
@@ -171,7 +172,7 @@ public class CannimalController : MonoBehaviour
     {
         TurnOffAllTriggerAnim();
         anim.SetBool("isDead", true);
-        state = STATE.DEAD;
+        state = STATE.ATTACK;
     }
 
     int damageAmount = 5;
