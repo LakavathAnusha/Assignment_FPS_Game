@@ -20,6 +20,10 @@ public class PlayerController : MonoBehaviour
 
     public AudioSource audioSource;
     public Transform bulletDirection;
+    float ammo=0f;
+    float maxAmmo=25f;
+   public  float health=10f;
+    public float MaxHealth=20f;
     //SpawnManager spawnManager;
 
     void Start()
@@ -40,6 +44,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             HitEnemy();
+            ammo--;
         }
     }
 
@@ -71,5 +76,21 @@ public class PlayerController : MonoBehaviour
 
             }
         }
+    }
+    public void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag=="Ammo"&&ammo<maxAmmo)
+        {
+            Debug.Log("ammo is collected");
+            ammo = Mathf.Clamp(ammo + 25, 0, maxAmmo);
+            Destroy(other.gameObject);
+        }
+        if (other.gameObject.tag == "Medical" && health < MaxHealth)
+        {
+            Debug.Log("health is collected");
+            ammo = Mathf.Clamp(ammo + 10, 0, maxAmmo);
+            Destroy(other.gameObject);
+        }
+
     }
 }

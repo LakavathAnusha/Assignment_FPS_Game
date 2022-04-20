@@ -10,6 +10,7 @@ public class CannimalController : MonoBehaviour
     NavMeshAgent agent;
     Animator animator;
     public Transform target;
+    PlayerController player;
     public enum STATE
     {
         IDLE, RUN,WALK,ATTACK
@@ -19,6 +20,7 @@ public class CannimalController : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        player = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
@@ -46,9 +48,10 @@ public class CannimalController : MonoBehaviour
     public void Walk()
     {
         AllAnimationFalse();
-        if (Vector3.Distance(target.position, this.transform.position) < 4f)
+        if (Vector3.Distance(target.position, this.transform.position) > 4f)
         {
             state = STATE.ATTACK;
+            animator.SetBool("IsWalk",true);
         }
 
     }
@@ -68,13 +71,14 @@ public class CannimalController : MonoBehaviour
     public void Run()
     {
         AllAnimationFalse();
-        animator.SetBool("IsWalk", true);
+        animator.SetBool("IsRun", true);
         agent.stoppingDistance = 5f;
         agent.SetDestination(target.transform.position);
 
         if (GetDistance() < agent.stoppingDistance + 1f)
         {
             state = STATE.ATTACK;
+            animator.SetBool("IsAttack", true);
         }
         if (GetDistance() > 20f)
         {
@@ -87,22 +91,13 @@ public class CannimalController : MonoBehaviour
     {
         AllAnimationFalse();
         animator.SetBool("IsAttack", true);
-        if (GetDistance() > agent.stoppingDistance)
-        {
-            state = STATE.IDLE;
-        }
-
-
-    }
-    public void Punch()
-    {
-        AllAnimationFalse();
-        animator.SetBool("IsPunch", true);
+        player.health--;
         if (GetDistance() > agent.stoppingDistance)
         {
             state = STATE.IDLE;
         }
     }
+   
     public void AllAnimationFalse()
     {
         animator.SetBool("IsAttack", false);
