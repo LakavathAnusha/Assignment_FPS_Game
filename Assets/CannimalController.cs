@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class CannimalController : MonoBehaviour
     public Transform target;
     public enum STATE
     {
-        IDLE, ATTACK, RUN, PUNCH
+        IDLE, RUN,WALK,ATTACK
     }
     public STATE state = STATE.IDLE;
     void Start()
@@ -28,24 +29,38 @@ public class CannimalController : MonoBehaviour
             case STATE.IDLE:
                 Idle();
                 break;
-            case STATE.ATTACK:
-                Attack();
-                break;
             case STATE.RUN:
                 Run();
                 break;
-            case STATE.PUNCH:
-                Punch();
+            case STATE.WALK:
+                Walk();
+                break;
+            case STATE.ATTACK:
+                Attack();
                 break;
             default:
                 break;
         }
+    }
+
+    public void Walk()
+    {
+        AllAnimationFalse();
+        if (Vector3.Distance(target.position, this.transform.position) < 4f)
+        {
+            state = STATE.ATTACK;
+        }
 
     }
+
     public void Idle()
     {
         AllAnimationFalse();
         if (Vector3.Distance(target.position, this.transform.position) < 15f)
+        {
+            state = STATE.WALK;
+        }
+        if (Vector3.Distance(target.position, this.transform.position) > 15f)
         {
             state = STATE.RUN;
         }
@@ -54,7 +69,7 @@ public class CannimalController : MonoBehaviour
     {
         AllAnimationFalse();
         animator.SetBool("IsWalk", true);
-        agent.stoppingDistance = 6f;
+        agent.stoppingDistance = 5f;
         agent.SetDestination(target.transform.position);
 
         if (GetDistance() < agent.stoppingDistance + 1f)
@@ -93,7 +108,7 @@ public class CannimalController : MonoBehaviour
         animator.SetBool("IsAttack", false);
         animator.SetBool("IsWalk", false);
         animator.SetBool("IsRun", false);
-        animator.SetBool("IsPunch", false);
+        //animator.SetBool("IsPunch", false);
       
     }
    
