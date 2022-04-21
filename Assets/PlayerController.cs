@@ -24,12 +24,15 @@ public class PlayerController : MonoBehaviour
     float maxAmmo=25f;
    public  float health=10f;
     public float MaxHealth=20f;
+    public new AudioClip audio;
+ 
     //SpawnManager spawnManager;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         colliders = GetComponent<CapsuleCollider>();
+        audio = GetComponent<AudioClip>();
         audioSource = GetComponent<AudioSource>();
 
     }
@@ -53,6 +56,7 @@ public class PlayerController : MonoBehaviour
         float inputX = Input.GetAxis("Horizontal") * playerSpeed;
         float inputz = Input.GetAxis("Vertical") * playerSpeed;
         transform.position += new Vector3(inputX, 0f, inputz);
+        audioSource.Play();
 
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");

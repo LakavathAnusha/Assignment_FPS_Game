@@ -453,7 +453,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!154 &809886493
 TerrainCollider:
   m_ObjectHideFlags: 0
@@ -654,7 +654,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!154 &1143885848
 TerrainCollider:
   m_ObjectHideFlags: 0
@@ -1219,7 +1219,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &1615179883
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1571,6 +1571,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 1019280774184760286, guid: 561f13d9cc5fb3e4db23ff1661db36af, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1019280774184760287, guid: 561f13d9cc5fb3e4db23ff1661db36af, type: 3}
       propertyPath: playerSpeed
       value: 0.2
@@ -1582,6 +1586,10 @@ PrefabInstance:
     - target: {fileID: 1019280775137521982, guid: 561f13d9cc5fb3e4db23ff1661db36af, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019280775137521987, guid: 561f13d9cc5fb3e4db23ff1661db36af, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 561f13d9cc5fb3e4db23ff1661db36af, type: 3}
