@@ -25,6 +25,10 @@ public class PlayerController : MonoBehaviour
    public  float health=10f;
     public float MaxHealth=20f;
     public new AudioClip audio;
+    public GameObject gun1;
+    public GameObject gun2;
+    public GameObject gun3;
+
  
     //SpawnManager spawnManager;
 
@@ -48,6 +52,24 @@ public class PlayerController : MonoBehaviour
         {
             HitEnemy();
             ammo--;
+        }
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            gun1.SetActive(false);
+            gun2.SetActive(true);
+            gun3.SetActive(false);
+        }
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            gun1.SetActive(false);
+            gun2.SetActive(false);
+            gun3.SetActive(true);
+        }
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            gun1.SetActive(true);
+            gun2.SetActive(false);
+            gun3.SetActive(false);
         }
     }
 
